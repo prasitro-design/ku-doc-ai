@@ -251,7 +251,7 @@ def render_dynamic_form():
             data['time_str'] = st.text_input("6. ช่วงเวลาที่จัดโครงการ", placeholder="เช่น 8.30 - 16.30 น.")
         data['location'] = st.text_input("7. สถานที่จัดโครงการ", placeholder="เช่น ห้องประชุมสารนิเทศยุพา วีระไวทยะ")
         data['request_detail'] = st.text_area("8. รายละเอียดที่นิสิตจะขอความอนุเคราะห์", placeholder="ขอใช้ห้องประชุมอะไร ขอยืมอุปกรณ์อะไร")
-        data['attachment'] = st.text_input("9. มีเอกสารแนบหรือไม่", placeholder="ถ้าไม่มี พิมพ์ว่าไม่มีได้เลยครับ")
+        data['attachment'] = st.text_input("9. มีเอกสารแนบหรือไม่", placeholder="ถ้ามีให้พิมพ์ชื่อเอกสารแนบ เช่น สำเนาโครงการ.....")
 
     elif doc_type == "[2] เชิญวิทยากร / ขอเชิญเป็นผู้ทรงคุณวุฒิตัดสินผลในโครงการ":
         st.info("💡 ระบบตั้งค่าเริ่มต้น: เรื่อง ขอความอนุเคราะห์บุคลากรในสังกัดของท่านเป็นวิทยากร/ผู้ทรงคุณวุฒิตัดสินผลในโครงการ")
@@ -284,7 +284,7 @@ def render_dynamic_form():
         data['date_str'] = st.text_input("5. วันที่ดำเนินโครงการ", placeholder="เช่น วันเสาร์ที่ 14 มีนาคม 2569, ระหว่างวันที่ 11 - 12 มีนาคม 2569")
         data['location'] = st.text_input("6. สถานที่จัดโครงการ", placeholder="เช่น โรงเรียนวัดดอนเจดีย์ อ.พนมทวน จ.กาญจนบุรี")
         data['student_count'] = st.text_input("7. จำนวนนิสิตเข้าร่วมกิจกรรมกี่คน?", placeholder="เช่น 50 คน")
-        data['attachment'] = st.text_input("8. มีเอกสารหรือไม่", placeholder="ถ้าไม่มี พิมพ์ว่าไม่มีได้เลยครับ")
+        data['attachment'] = st.text_input("8. มีเอกสารหรือไม่", placeholder="ถ้ามีให้พิมพ์ชื่อเอกสารแนบ เช่น สำเนาโครงการ.....")
         
     return data
 
