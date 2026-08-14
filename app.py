@@ -14,7 +14,6 @@ st.set_page_config(
     page_title="ระบบช่วยร่างและตรวจสอบหนังสือราชการ", page_icon="📝", layout="wide"
 )
 
-
 # ==========================================
 # ระบบปรับแต่ง Background & CSS หัวเว็บ
 # ==========================================
@@ -147,7 +146,6 @@ def set_background(image_file="background.jpg"):
       unsafe_allow_html=True,
   )
 
-
 # เรียกใช้สไตล์ธีมหน้าเว็บ
 set_background("background.jpg")
 
@@ -182,30 +180,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # ==========================================
 # ระบบดึงวันที่ปัจจุบัน (ภาษาไทย)
 # ==========================================
 def get_thai_date():
   thai_months = [
-      "มกราคม",
-      "กุมภาพันธ์",
-      "มีนาคม",
-      "เมษายน",
-      "พฤษภาคม",
-      "มิถุนายน",
-      "กรกฎาคม",
-      "สิงหาคม",
-      "กันยายน",
-      "ตุลาคม",
-      "พฤศจิกายน",
-      "ธันวาคม",
+      "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+      "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",
   ]
   now = datetime.datetime.now()
   thai_year = now.year + 543
   thai_month = thai_months[now.month - 1]
   return f"{now.day} {thai_month} {thai_year}"
-
 
 # ==========================================
 # ระบบแทนที่คำใน Template Word
@@ -220,7 +206,6 @@ def generate_word_from_template(template_path, context):
   except Exception as e:
     st.error(f"เกิดข้อผิดพลาดในการสร้างไฟล์ Word: {e}")
     return None
-
 
 # ==========================================
 # ฟังก์ชันช่วยแกะ JSON จาก AI
@@ -237,6 +222,87 @@ def parse_ai_json(response_text):
     st.error("เกิดข้อผิดพลาดในการอ่านข้อมูลจาก AI กรุณาลองใหม่อีกครั้ง")
     return None
 
+# ==========================================
+# ฟังก์ชันระบบ Dynamic Form (ตามวัตถุประสงค์)
+# ==========================================
+def render_dynamic_form():
+    doc_type = st.selectbox(
+        "เลือกวัตถุประสงค์ของการทำหนังสือ:",
+        [
+            "[1] ขอความอนุเคราะห์",
+            "[2] เชิญวิทยากร / ขอเชิญเป็นผู้ทรงคุณวุฒิตัดสินผลในโครงการ",
+            "[3] เชิญเป็นประธานในพิธีเปิด",
+            "[4] ขออนุมัตินำนิสิตทำกิจกรรมนอกสถานที่"
+        ]
+    )
+    st.markdown("---")
+    
+    data = {"doc_type": doc_type, "attachment": "ไม่มี"}
+
+    if doc_type == "[1] ขอความอนุเคราะห์":
+        data['subject'] = st.text_input("1. เรื่องที่จะขอความอนุเคราะห์คือเรื่องอะไรครับ?", placeholder="ขอความอนุเคราะห์ใช้สถานที่, ขอความอนุเคราะห์ยืมอุปกรณ์,ขอความอนุเคราะห์ลงนามในหนังสือ, ขอลาเรียนโดยไม่ถือเป็นวันลา")
+        data['receiver'] = st.text_input("2. หนังสือฉบับนี้เรียนใครครับ? (ตำแหน่งผู้รับ)")
+        data['project_name'] = st.text_input("3. ขอรายละเอียดโครงการหน่อยครับ ชื่อโครงการอะไรครับ?")
+        data['objective'] = st.text_area("4. วัตถุประสงค์หลักที่จัดงานนี้ จัดไปเพื่ออะไรครับ?", placeholder="เอาแบบสรุปใจความสำคัญ ไม่ต้องเขียนมาหมดครับ")
+        col1, col2 = st.columns(2)
+        with col1:
+            data['date_str'] = st.text_input("5. จัดวันที่เท่าไหร่ ถึงวันที่เท่าไหร่?", placeholder="เช่น วันเสาร์ที่ 14 มีนาคม 2569, ระหว่างวันที่ 11 - 12 มีนาคม 2569")
+        with col2:
+            data['time_str'] = st.text_input("6. จัดเวลาไหนครับ?", placeholder="เช่น 8.30 - 16.30 น.")
+        data['location'] = st.text_input("7. และสถานที่จัดงานคือที่ไหนครับ?", placeholder="เช่น ห้องประชุมสารนิเทศยุพา วีระไวทยะ")
+        data['request_detail'] = st.text_area("8. รายละเอียดที่นิสิตจะขอความอนุเคราะห์", placeholder="ขอใช้ห้องประชุมอะไร ขอยืมอุปกรณ์อะไร")
+        data['attachment'] = st.text_input("9. มีเอกสารอะไรแนบไปด้วยไหมครับ?", placeholder="ถ้าไม่มี พิมพ์ว่าไม่มีได้เลยครับ")
+
+    elif doc_type == "[2] เชิญวิทยากร / ขอเชิญเป็นผู้ทรงคุณวุฒิตัดสินผลในโครงการ":
+        st.info("💡 ระบบตั้งค่าเริ่มต้น: เรื่อง ขอความอนุเคราะห์บุคลากรในสังกัดของท่านเป็นวิทยากร/ผู้ทรงคุณวุฒิตัดสินผลในโครงการ")
+        data['subject'] = "ขอความอนุเคราะห์บุคลากรในสังกัดของท่านเป็นวิทยากร/ขอความอนุเคราะห์บุคลากรในสังกัดของท่านเป็นผู้ทรงคุณวุฒิตัดสินผลในโครงการ"
+        data['receiver'] = st.text_input("1. หนังสือฉบับนี้เรียนใครครับ?", placeholder="ตำแหน่งของผู้บังคับบัญชาของวิทยากร/ผู้ทรงคุณวุฒิ เช่น คณบดีคณะศึกษาศาสตร์, ผู้อำนวยการโรงเรียนสาธิตแห่งมหาวิทยาลัยเกษตรศาสตร์ฯ")
+        data['project_name'] = st.text_input("2. โครงการนี้ชื่อโครงการอะไร?")
+        data['objective'] = st.text_area("3. มีวัตถุประสงค์ในการจัดโครงการเพื่ออะไรครับ?", placeholder="เขียนใจความสำคัญ ๆ ไม่ต้องเขียนวัตถุประสงค์ทั้งหมด")
+        data['date_str'] = st.text_input("4. จัดวันที่เท่าไหร่ ถึงวันที่เท่าไหร่?", placeholder="เช่น วันเสาร์ที่ 14 มีนาคม 2569, ระหว่างวันที่ 11 - 12 มีนาคม 2569")
+        data['expert_name'] = st.text_input("5. ชื่อของวิทยากรที่จะมาบรรยาย/ชื่อของผู้ทรงคุณวุฒิตัดสินผล?")
+        data['topic'] = st.text_input("6. หัวข้อที่ต้องการเชิญมาบรรยาย คือเรื่องอะไรครับ?", placeholder="ถ้าเลือกขอเชิญเป็นผู้ทรงคุณวุฒิตัดสินผลในโครงการให้ข้ามข้อนี้")
+        data['expert_detail'] = st.text_area("7. ขอรายละเอียดที่จะให้วิทยากรมาบรรยายหรือเป็นผู้ทรงคุณวุฒิตัดสินผล", placeholder="ในวันที่เท่าไหร่ เวลาตั้งแต่กี่โมงถึงกี่โมง และสถานที่บรรยาย/สถานที่ตัดสินผลที่ไหนครับ?")
+        data['attachment'] = st.text_input("8. มีเอกสารอะไรแนบไปด้วยไหมครับ?", placeholder="เช่น กำหนดการ, โครงการ")
+
+    elif doc_type == "[3] เชิญเป็นประธานในพิธีเปิด":
+        st.info("💡 ระบบตั้งค่าเริ่มต้น: เรื่อง ขอเรียนเชิญเป็นประธานในพิธีเปิดโครงการ")
+        data['subject'] = "ขอเรียนเชิญเป็นประธานในพิธีเปิดโครงการ"
+        data['receiver'] = st.text_input("1. หนังสือฉบับนี้เรียนใครครับ?", placeholder="ชื่อและตำแหน่งของผู้ที่จะเชิญมาเป็นประธาน")
+        data['project_name'] = st.text_input("2. โครงการนี้ชื่อโครงการอะไรครับ?")
+        data['objective'] = st.text_area("3. มีวัตถุประสงค์ในการจัดโครงการเพื่ออะไรครับ?", placeholder="เขียนใจความสำคัญ ๆ ไม่ต้องเขียนวัตถุประสงค์ทั้งหมด")
+        data['date_str'] = st.text_input("4. จัดขึ้นตั้งแต่วันที่เท่าไหร่ถึงเท่าไหร่?", placeholder="เช่น วันเสาร์ที่ 14 มีนาคม 2569, ระหว่างวันที่ 11 - 12 มีนาคม 2569")
+        data['opening_detail'] = st.text_area("5. ขอรายละเอียดพิธีเปิดหน่อยครับ", placeholder="วันที่, เวลาที่ทำพิธีเปิด, และสถานที่จัดพิธีเปิด")
+        data['attachment'] = st.text_input("6. มีเอกสารอะไรแนบไปด้วยไหมครับ?", placeholder="เช่น กำหนดการ")
+
+    elif doc_type == "[4] ขออนุมัตินำนิสิตทำกิจกรรมนอกสถานที่":
+        st.info("💡 ระบบตั้งค่าเริ่มต้น: เรื่อง ขออนุมัติทำกิจกรรมนอกสถานที่ | เรียน คณบดีคณะศึกษาศาสตร์")
+        data['subject'] = "ขออนุมัติทำกิจกรรมนอกสถานที่"
+        data['receiver'] = "คณบดีคณะศึกษาศาสตร์"
+        data['project_name'] = st.text_input("3. ขอรายละเอียดโครงการหน่อยครับ ชื่อโครงการอะไรครับ?")
+        data['objective'] = st.text_area("4. วัตถุประสงค์หลักที่จัดงานนี้ จัดไปเพื่ออะไรครับ?", placeholder="เอาแบบสรุปใจความสำคัญ ไม่ต้องเขียนมาหมดครับ")
+        data['date_str'] = st.text_input("5. จัดวันที่เท่าไหร่ ถึงวันที่เท่าไหร่?", placeholder="เช่น วันเสาร์ที่ 14 มีนาคม 2569, ระหว่างวันที่ 11 - 12 มีนาคม 2569")
+        data['location'] = st.text_input("6. และสถานที่จัดงานคือที่ไหนครับ?", placeholder="เช่น โรงเรียนวัดดอนเจดีย์ อ.พนมทวน จ.กาญจนบุรี")
+        data['student_count'] = st.text_input("7. จำนวนนิสิตเข้าร่วมกิจกรรมกี่คนครับ?", placeholder="เช่น 50 คน")
+        data['attachment'] = st.text_input("8. มีเอกสารอะไรแนบไปด้วยไหมครับ?", placeholder="ถ้าไม่มี พิมพ์ว่าไม่มีได้เลยครับ")
+        
+    return data
+
+def format_raw_info(data):
+    raw_info = f"- ประเภทหนังสือ: {data.get('doc_type')}\n"
+    key_map = {
+        'subject': 'เรื่อง', 'receiver': 'เรียน (ผู้รับ)', 'project_name': 'ชื่อโครงการ',
+        'objective': 'วัตถุประสงค์', 'date_str': 'วันที่จัด/ระยะเวลา', 'time_str': 'เวลาที่จัด',
+        'location': 'สถานที่', 'request_detail': 'รายละเอียดที่ต้องการ', 'attachment': 'สิ่งที่ส่งมาด้วย',
+        'expert_name': 'ชื่อวิทยากร/ผู้ทรงคุณวุฒิ', 'topic': 'หัวข้อที่บรรยาย', 
+        'expert_detail': 'รายละเอียดกำหนดการบรรยาย/ตัดสินผล', 'opening_detail': 'รายละเอียดพิธีเปิด',
+        'student_count': 'จำนวนนิสิตเข้าร่วม'
+    }
+    for key, value in data.items():
+        if key != 'doc_type' and value:
+            thai_key = key_map.get(key, key)
+            raw_info += f"- {thai_key}: {value}\n"
+    return raw_info
 
 # ==========================================
 # ระบบตั้งค่า API Key (ดึงอัตโนมัติจาก Secrets)
@@ -251,8 +317,7 @@ else:
 
 if not api_key:
   st.error(
-      "⚠️ ไม่พบ API Key ในระบบ (กรุณาตั้งค่า Secrets ใน Streamlit Cloud หรือกรอก"
-      " API Key ใน Sidebar)"
+      "⚠️ ไม่พบ API Key ในระบบ (กรุณาตั้งค่า Secrets ใน Streamlit Cloud หรือกรอก API Key ใน Sidebar)"
   )
   st.stop()
 
@@ -284,65 +349,26 @@ if menu == "ร่างหนังสือภายใน (บันทึก
   )
 
   st.markdown("---")
-  st.subheader("ส่วนหัวหนังสือ")
+  st.subheader("ส่วนหัวและข้อมูลติดต่อ")
   col1, col2 = st.columns(2)
   with col1:
-    sender = st.text_input(
-        "ชื่อหน่วยงาน/ชมรม", placeholder="เช่น สโมสรนิสิตคณะศึกษาศาสตร์"
-    )
-    date = st.text_input("วันที่", value=get_thai_date())
+    sender = st.text_input("ชื่อหน่วยงาน/ชมรม", placeholder="เช่น สโมสรนิสิตคณะศึกษาศาสตร์")
+    coordinator_name = st.text_input("ชื่อผู้ประสานงาน", placeholder="เช่น นายใจดี มีสุข")
   with col2:
-    subject = st.text_input(
-        "เรื่อง", placeholder="เช่น ขออนุมัติจัดโครงการ..."
-    )
-    receiver = st.text_input(
-        "เรียน", placeholder="เช่น คณบดีคณะศึกษาศาสตร์"
-    )
-
-  col3, col4 = st.columns(2)
-  with col3:
-    coordinator_name = st.text_input(
-        "ชื่อผู้ประสานงาน", placeholder="เช่น นายใจดี มีสุข"
-    )
-  with col4:
-    coordinator_phone = st.text_input(
-        "เบอร์โทรศัพท์ผู้ประสานงาน", placeholder="เช่น 081-234-5678"
-    )
+    date = st.text_input("วันที่", value=get_thai_date())
+    coordinator_phone = st.text_input("เบอร์โทรศัพท์ผู้ประสานงาน", placeholder="เช่น 081-234-5678")
 
   st.markdown("---")
-  st.subheader("ส่วนเนื้อหาโครงการ (สำหรับย่อหน้าที่ 1: ต้นเรื่อง)")
-  project_name = st.text_input(
-      "1. ชื่อโครงการ / กิจกรรม", placeholder="เช่น โครงการค่ายอาสาพัฒนาชนบท"
-  )
-  project_objective = st.text_input(
-      "2. วัตถุประสงค์หลัก", placeholder="วัตถุประสงค์โดยย่อ ๆ"
-  )
-  project_datetime_loc = st.text_area(
-      "3. วัน เวลา และสถานที่จัดงาน",
-      placeholder="จัดวันไหนถึงวันไหน? ที่ไหน? กลุ่มเป้าหมายคือใคร?",
-  )
-
-  st.subheader("ส่วนความประสงค์ (สำหรับย่อหน้าที่ 2 และ 3: การขออนุมัติ)")
-  request_details = st.text_area(
-      "4. สิ่งที่ต้องการขออนุมัติจากผู้รับหนังสือ", placeholder="ต้องการอะไร?"
-  )
+  st.subheader("รายละเอียดข้อมูลในหนังสือ")
+  form_data = render_dynamic_form()
 
   if st.button("✨ ให้ AI ร่างหนังสือภายใน", type="primary"):
-    if (
-        not sender
-        or not subject
-        or not receiver
-        or not project_name
-        or not request_details
-    ):
-      st.warning("⚠️ กรุณากรอกข้อมูลสำคัญให้ครบถ้วนก่อนเริ่มประมวลผล")
+    if not sender or not form_data.get('subject') or not form_data.get('receiver') or not form_data.get('project_name'):
+      st.warning("⚠️ กรุณากรอกข้อมูลสำคัญ (ชื่อหน่วยงาน, เรื่อง, เรียน, ชื่อโครงการ) ให้ครบถ้วนก่อนเริ่มประมวลผล")
     else:
-      with st.spinner("AI กำลังเรียบเรียงและเกลาภาษาราชการทุกส่วน..."):
-        target_template = (
-            "template_internal_club.docx"
-            if org_type == "สโมสรนิสิต / ชุมนุม"
-            else "template_internal_major.docx"
-        )
+      with st.spinner("พี่ AI กำลังเรียบเรียงและเกลาภาษาราชการทุกส่วน..."):
+        target_template = "template_internal_club.docx" if org_type == "สโมสรนิสิต / ชุมนุม" else "template_internal_major.docx"
+        raw_info = format_raw_info(form_data)
 
         prompt = f"""คุณคือหัวหน้างานสารบรรณระดับสูง หน้าที่ของคุณคือการนำข้อมูลดิบของนิสิต ไปเกลาและเรียบเรียงใหม่ทั้งหมดให้เป็น "ภาษาราชการทางการระดับสูงสุด"
 
@@ -362,12 +388,7 @@ if menu == "ร่างหนังสือภายใน (บันทึก
 
 ข้อมูลดิบจากนิสิต:
 - ชื่อส่วนราชการ: {sender}
-- เรื่อง: {subject}
-- เรียน: {receiver}
-- ชื่อโครงการ: {project_name}
-- วัตถุประสงค์: {project_objective}
-- วันเวลาสถานที่: {project_datetime_loc}
-- สิ่งที่ต้องการขออนุมัติ: {request_details}
+{raw_info}
 
 ส่งผลลัพธ์กลับมาเป็น JSON Format เท่านั้น:
 {{
@@ -385,23 +406,15 @@ if menu == "ร่างหนังสือภายใน (บันทึก
           ai_data = parse_ai_json(response.text)
 
           if ai_data:
-            st.success("เรียบเรียงภาษาเรียบร้อยแล้ว!")
+            st.success("พี่ร่างให้เรียบร้อยแล้วครับ น้องอย่าลืมเติมข้อมูลตรงช่องว่างที่เว้นไว้ (... หรือ [...]) นะครับ หากต้องการให้พี่ปรับแก้คำศัพท์ส่วนไหน หรือแก้ไขข้อมูลตรงไหน พิมพ์บอกมาได้เลยครับ!")
 
             st.markdown("### 📋 ตัวอย่างข้อความที่ AI ช่วยเกลาให้:")
             st.write(f"**ส่วนราชการ:** {ai_data.get('sender', '')}")
             st.write(f"**เรื่อง:** {ai_data.get('subject', '')}")
             st.write(f"**เรียน:** {ai_data.get('receiver', '')}")
-            st.write(
-                f"**ผู้ประสานงาน:** {coordinator_name} (โทร."
-                f" {coordinator_phone})"
-            )
-            st.info(
-                "**เนื้อหาหนังสือ (ย่อหน้าที่ 1 และ"
-                f" 2):**\n\n{ai_data.get('body', '')}"
-            )
-            st.info(
-                f"**ข้อความสรุป (ย่อหน้าที่ 3):**\n\n{ai_data.get('conclusion', '')}"
-            )
+            st.write(f"**ผู้ประสานงาน:** {coordinator_name} (โทร. {coordinator_phone})")
+            st.info(f"**เนื้อหาหนังสือ (ย่อหน้าที่ 1 และ 2):**\n\n{ai_data.get('body', '')}")
+            st.info(f"**ข้อความสรุป (ย่อหน้าที่ 3):**\n\n{ai_data.get('conclusion', '')}")
 
             context = {
                 "sender": ai_data.get("sender", ""),
@@ -420,17 +433,11 @@ if menu == "ร่างหนังสือภายใน (บันทึก
                 st.download_button(
                     label="📥 ดาวน์โหลดหนังสือฉบับสมบูรณ์ (.docx)",
                     data=docx_data,
-                    file_name=(
-                        f"บันทึกข้อความ_{ai_data.get('subject', 'document')}.docx"
-                    ),
-                    mime=(
-                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    ),
+                    file_name=(f"บันทึกข้อความ_{ai_data.get('subject', 'document')}.docx"),
+                    mime=("application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
                 )
             else:
-              st.error(
-                  f"⚠️ ไม่พบไฟล์แม่พิมพ์ {target_template} ในระบบ"
-              )
+              st.error(f"⚠️ ไม่พบไฟล์แม่พิมพ์ {target_template} ในระบบ")
         except Exception as e:
           st.error(f"เกิดข้อผิดพลาดในการประมวลผล AI: {e}")
 
@@ -441,64 +448,25 @@ elif menu == "ร่างหนังสือภายนอก":
   st.header("🏢 ร่างหนังสือภายนอก")
 
   st.markdown("---")
-  st.subheader("ส่วนหัวหนังสือ")
+  st.subheader("ส่วนหัวและข้อมูลติดต่อ")
   col1, col2 = st.columns(2)
   with col1:
-    org = st.text_input(
-        "หน่วยงานผู้ออกหนังสือ",
-        placeholder="เช่น คณะศึกษาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์",
-    )
-    date = st.text_input("วันที่", value=get_thai_date())
+    org = st.text_input("หน่วยงานผู้ออกหนังสือ", placeholder="เช่น คณะศึกษาศาสตร์ มหาวิทยาลัยเกษตรศาสตร์")
+    coordinator_name = st.text_input("ชื่อผู้ประสานงาน", placeholder="เช่น นายใจดี มีสุข")
   with col2:
-    subject = st.text_input(
-        "เรื่อง", placeholder="เช่น ขอความอนุเคราะห์เป็นวิทยากร"
-    )
-    receiver = st.text_input("เรียน", placeholder="เช่น ผู้จัดการบริษัท...")
-
-  col3, col4 = st.columns(2)
-  with col3:
-    coordinator_name = st.text_input(
-        "ชื่อผู้ประสานงาน", placeholder="เช่น นายใจดี มีสุข"
-    )
-  with col4:
-    coordinator_phone = st.text_input(
-        "เบอร์โทรศัพท์ผู้ประสานงาน", placeholder="เช่น 081-234-5678"
-    )
-
-  attachment = st.text_input(
-      "สิ่งที่ส่งมาด้วย (ถ้ามี)",
-      placeholder="เช่น กำหนดการจัดงาน จำนวน ๑ ฉบับ",
-  )
+    date = st.text_input("วันที่", value=get_thai_date())
+    coordinator_phone = st.text_input("เบอร์โทรศัพท์ผู้ประสานงาน", placeholder="เช่น 081-234-5678")
 
   st.markdown("---")
-  st.subheader("ส่วนเนื้อหาโครงการ (สำหรับย่อหน้าที่ 1: ต้นเรื่อง)")
-  project_name = st.text_input(
-      "1. ชื่อโครงการ / กิจกรรม", placeholder="เช่น โครงการสัมมนาวิชาการ..."
-  )
-  project_objective = st.text_input(
-      "2. วัตถุประสงค์หลัก", placeholder="จัดทำไม?"
-  )
-  project_datetime_loc = st.text_area(
-      "3. วัน เวลา และสถานที่จัดงาน", placeholder="จัดเมื่อไหร่? ที่ไหน?"
-  )
-
-  st.subheader("ส่วนความประสงค์ (สำหรับย่อหน้าที่ 2 และ 3: การขอความอนุเคราะห์)")
-  request_details = st.text_area(
-      "4. สิ่งที่ต้องการขอความอนุเคราะห์จากบุคคลภายนอก",
-      placeholder="ต้องการให้เขาทำอะไร?",
-  )
+  st.subheader("รายละเอียดข้อมูลในหนังสือ")
+  form_data = render_dynamic_form()
 
   if st.button("✨ ให้ AI ร่างหนังสือภายนอก", type="primary"):
-    if (
-        not org
-        or not subject
-        or not receiver
-        or not project_name
-        or not request_details
-    ):
-      st.warning("⚠️ กรุณากรอกข้อมูลสำคัญให้ครบถ้วนก่อนเริ่มประมวลผล")
+    if not org or not form_data.get('subject') or not form_data.get('receiver') or not form_data.get('project_name'):
+      st.warning("⚠️ กรุณากรอกข้อมูลสำคัญ (หน่วยงานผู้ออกหนังสือ, เรื่อง, เรียน, ชื่อโครงการ) ให้ครบถ้วนก่อนเริ่มประมวลผล")
     else:
-      with st.spinner("AI กำลังเรียบเรียงและเกลาภาษาราชการทุกส่วน..."):
+      with st.spinner("พี่ AI กำลังเรียบเรียงและเกลาภาษาราชการทุกส่วน..."):
+        raw_info = format_raw_info(form_data)
 
         prompt = f"""คุณคือหัวหน้างานสารบรรณระดับสูง หน้าที่ของคุณคือการนำข้อมูลดิบของนิสิตไปเกลาและเรียบเรียงใหม่ทั้งหมดให้เป็น "ภาษาราชการทางการระดับสูงสุด" สำหรับหนังสือภายนอก (ตราครุฑ)
 
@@ -519,13 +487,7 @@ elif menu == "ร่างหนังสือภายนอก":
 
 ข้อมูลดิบจากนิสิต:
 - หน่วยงานผู้ออกหนังสือ: {org}
-- เรื่อง: {subject}
-- เรียน: {receiver}
-- สิ่งที่ส่งมาด้วย: {attachment}
-- ชื่อโครงการ: {project_name}
-- วัตถุประสงค์: {project_objective}
-- วันเวลาสถานที่: {project_datetime_loc}
-- สิ่งที่ต้องการขอความอนุเคราะห์: {request_details}
+{raw_info}
 
 ส่งผลลัพธ์กลับมาเป็น JSON Format เท่านั้น:
 {{
@@ -544,24 +506,16 @@ elif menu == "ร่างหนังสือภายนอก":
           ai_data = parse_ai_json(response.text)
 
           if ai_data:
-            st.success("เรียบเรียงภาษาเรียบร้อยแล้ว!")
+            st.success("พี่ร่างให้เรียบร้อยแล้วครับ น้องอย่าลืมเติมข้อมูลตรงช่องว่างที่เว้นไว้ (... หรือ [...]) นะครับ หากต้องการให้พี่ปรับแก้คำศัพท์ส่วนไหน หรือแก้ไขข้อมูลตรงไหน พิมพ์บอกมาได้เลยครับ!")
 
             st.markdown("### 📋 ตัวอย่างข้อความที่ AI ช่วยเกลาให้:")
             st.write(f"**หน่วยงานผู้ออกหนังสือ:** {ai_data.get('org', '')}")
             st.write(f"**เรื่อง:** {ai_data.get('subject', '')}")
             st.write(f"**เรียน:** {ai_data.get('receiver', '')}")
             st.write(f"**สิ่งที่ส่งมาด้วย:** {ai_data.get('attachment', '')}")
-            st.write(
-                f"**ผู้ประสานงาน:** {coordinator_name} (โทร."
-                f" {coordinator_phone})"
-            )
-            st.info(
-                "**เนื้อหาหนังสือ (ย่อหน้าที่ 1 และ"
-                f" 2):**\n\n{ai_data.get('body', '')}"
-            )
-            st.info(
-                f"**ข้อความสรุป (ย่อหน้าที่ 3):**\n\n{ai_data.get('conclusion', '')}"
-            )
+            st.write(f"**ผู้ประสานงาน:** {coordinator_name} (โทร. {coordinator_phone})")
+            st.info(f"**เนื้อหาหนังสือ (ย่อหน้าที่ 1 และ 2):**\n\n{ai_data.get('body', '')}")
+            st.info(f"**ข้อความสรุป (ย่อหน้าที่ 3):**\n\n{ai_data.get('conclusion', '')}")
 
             context = {
                 "org": ai_data.get("org", ""),
@@ -582,17 +536,11 @@ elif menu == "ร่างหนังสือภายนอก":
                 st.download_button(
                     label="📥 ดาวน์โหลดหนังสือฉบับสมบูรณ์ (.docx)",
                     data=docx_data,
-                    file_name=(
-                        f"หนังสือภายนอก_{ai_data.get('subject', 'document')}.docx"
-                    ),
-                    mime=(
-                        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                    ),
+                    file_name=(f"หนังสือภายนอก_{ai_data.get('subject', 'document')}.docx"),
+                    mime=("application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
                 )
             else:
-              st.error(
-                  "⚠️ ไม่พบไฟล์แม่พิมพ์ template_external.docx ในระบบ"
-              )
+              st.error("⚠️ ไม่พบไฟล์แม่พิมพ์ template_external.docx ในระบบ")
         except Exception as e:
           st.error(f"เกิดข้อผิดพลาดในการประมวลผล AI: {e}")
 
