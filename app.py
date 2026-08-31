@@ -343,45 +343,27 @@ def inject_theme(image_file: str = "background.jpg") -> None:
 
 
 NAVBAR_HTML = """
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 <div class="custom-navbar">
-
-  <div class="nav-brand">
-
-    <img src="https://lh3.googleusercontent.com/d/1Ib-E-X35YqI8vQl7wpar_UXdoQYdc_1N" alt="Logo KU">
-
-    ฝ่ายพัฒนานิสิต คณะศึกษาศาสตร์ มก.
-
-  </div>
-
-  <input type="checkbox" id="nav-toggle" class="nav-toggle">
-
-  <label for="nav-toggle" class="nav-toggle-label"><i class="fa-solid fa-bars"></i></label>
-
-  <div class="nav-links">
-
-    <a href="https://canva.link/cbn78xyohbndm6z" target="_blank"><i class="fa-solid fa-list-check"></i> ขั้นตอนการเสนอโครงการ</a>
-
-    <a href="https://drive.google.com/drive/u/1/folders/1HDGo2ImRk_Szo5gXn5JnCXsu6swffRux" target="_blank"><i class="fa-solid fa-download"></i> ดาวน์โหลดแบบฟอร์ม</a>
-
-    <a href="https://canva.link/fmw17m6mt6o0pok" target="_blank"><i class="fa-solid fa-award"></i> Template เกียรติบัตร</a>
-
-    <a href="https://www.edu.ku.ac.th/" target="_blank"><i class="fa-solid fa-globe"></i> เว็บไซต์คณะ</a>
-
-  </div>
-
+<div class="nav-brand">
+<img src="https://lh3.googleusercontent.com/d/1Ib-E-X35YqI8vQl7wpar_UXdoQYdc_1N" alt="Logo KU">
+<span>ฝ่ายพัฒนานิสิต คณะศึกษาศาสตร์ มก.</span>
 </div>
-
+<input type="checkbox" id="nav-toggle" class="nav-toggle">
+<label for="nav-toggle" class="nav-toggle-label"><i class="fa-solid fa-bars"></i></label>
+<div class="nav-links">
+<a href="https://canva.link/cbn78xyohbndm6z" target="_blank"><i class="fa-solid fa-list-check"></i> ขั้นตอนการเสนอโครงการ</a>
+<a href="https://drive.google.com/drive/u/1/folders/1HDGo2ImRk_Szo5gXn5JnCXsu6swffRux" target="_blank"><i class="fa-solid fa-download"></i> ดาวน์โหลดแบบฟอร์ม</a>
+<a href="https://canva.link/fmw17m6mt6o0pok" target="_blank"><i class="fa-solid fa-award"></i> Template เกียรติบัตร</a>
+<a href="https://www.edu.ku.ac.th/" target="_blank"><i class="fa-solid fa-globe"></i> เว็บไซต์คณะ</a>
+</div>
+</div>
 
 <div class="hero-section">
-
-  <h1>📝 ระบบช่วยร่างและตรวจสอบหนังสือราชการ</h1>
-
-  <p>เครื่องมือช่วยสร้างและตรวจสอบหนังสือราชการตามรูปแบบมาตรฐาน</p>
-
+<h1>📝 ระบบช่วยร่างและตรวจสอบหนังสือราชการ</h1>
+<p>เครื่องมือช่วยสร้างและตรวจสอบหนังสือราชการตามรูปแบบมาตรฐาน</p>
 </div>
+"""
 
 """
 
