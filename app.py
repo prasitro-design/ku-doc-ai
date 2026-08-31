@@ -49,7 +49,7 @@ CUSTOM_CSS = """
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap');
 
 html, body, [class*="css"] {
-font-family: 'Sarabun', sans-serif;
+    font-family: 'Sarabun', sans-serif;
 }
 
 #MainMenu {visibility: hidden;}
@@ -57,153 +57,179 @@ footer {visibility: hidden;}
 header {visibility: hidden;}
 
 .block-container {
-padding-top: 1rem;
-padding-bottom: 3rem;
-max-width: 1200px;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+    max-width: 1200px;
 }
 
+/* Navbar Container */
 .custom-navbar {
-display: flex;
-align-items: center;
-justify-content: space-between;
-background: #ffffff;
-border: 1px solid #e6e6ef;
-border-radius: 14px;
-padding: 10px 18px;
-box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-margin-bottom: 18px;
-flex-wrap: wrap;
-gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border-radius: 12px 12px 0 0;
+    padding: 14px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .nav-brand {
-display: flex;
-align-items: center;
-gap: 10px;
-font-weight: 600;
-color: #4a1d96;
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .nav-brand img {
-height: 38px;
-width: auto;
+    height: 42px;
+    width: auto;
+}
+
+/* เส้นขีดแบ่ง (Vertical Separator) */
+.brand-divider {
+    width: 1.5px;
+    height: 24px;
+    background-color: #d1d5db;
+}
+
+/* ข้อความชื่อหน่วยงานสีม่วง */
+.brand-title {
+    font-weight: 700;
+    color: #5b21b6;
+    font-size: 1.05rem;
 }
 
 .nav-links {
-display: flex;
-align-items: center;
-gap: 8px;
-flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .nav-links a {
-text-decoration: none;
-color: #4a1d96;
-font-size: 0.9rem;
-padding: 7px 13px;
-border-radius: 8px;
-transition: all 0.18s ease;
-white-space: nowrap;
+    text-decoration: none;
+    color: #374151;
+    font-size: 0.92rem;
+    font-weight: 400;
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .nav-links a:hover {
-background: #f3e8ff;
-color: #6d28d9;
+    color: #6d28d9;
+}
+
+/* เส้นคาดสีม่วงด้านล่าง Navbar */
+.navbar-bottom-bar {
+    height: 5px;
+    background: #6d28d9;
+    border-radius: 0 0 4px 4px;
+    margin-bottom: 24px;
 }
 
 .nav-toggle, .nav-toggle-label {
-display: none;
+    display: none;
 }
 
-@media (max-width: 860px) {
-.nav-toggle-label {
-display: block;
-cursor: pointer;
-font-size: 1.3rem;
-color: #4a1d96;
-}
-.nav-links {
-display: none;
-width: 100%;
-flex-direction: column;
-align-items: flex-start;
-}
-.nav-toggle:checked ~ .nav-links {
-display: flex;
-}
+@media (max-width: 992px) {
+    .nav-toggle-label {
+        display: block;
+        cursor: pointer;
+        font-size: 1.3rem;
+        color: #4a1d96;
+    }
+    .nav-links {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 10px;
+    }
+    .nav-toggle:checked ~ .nav-links {
+        display: flex;
+    }
 }
 
 .hero-section {
-background: linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%);
-border-radius: 16px;
-padding: 34px 20px;
-text-align: center;
-color: #ffffff;
-margin-bottom: 26px;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 55%, #c026d3 100%);
+    border-radius: 16px;
+    padding: 34px 20px;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 26px;
 }
 
 .hero-section h1 {
-margin: 0;
-font-size: 2.05rem;
-font-weight: 700;
-color: #ffffff;
+    margin: 0;
+    font-size: 2.05rem;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .hero-section p {
-margin: 8px 0 0 0;
-font-size: 1.02rem;
-opacity: 0.93;
+    margin: 8px 0 0 0;
+    font-size: 1.02rem;
+    opacity: 0.93;
 }
 
 .stTabs [data-baseweb="tab"] {
-font-size: 1rem;
-font-weight: 600;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 div.stButton > button {
-border-radius: 9px;
-font-weight: 600;
-padding: 0.55rem 1.3rem;
+    border-radius: 9px;
+    font-weight: 600;
+    padding: 0.55rem 1.3rem;
 }
 
 .result-box {
-background: #faf7ff;
-border-left: 4px solid #7c3aed;
-border-radius: 8px;
-padding: 14px 18px;
-margin-bottom: 12px;
+    background: #faf7ff;
+    border-left: 4px solid #7c3aed;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
 }
 </style>
 """
-
-
 NAVBAR_HTML = """
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <div class="custom-navbar">
-<div class="nav-brand">
-<img src="https://lh3.googleusercontent.com/d/1Ib-E-X35YqI8vQl7wpar_UXdoQYdc_1N" alt="Logo KU">
-<span>ฝ่ายพัฒนานิสิต คณะศึกษาศาสตร์ มก.</span>
-</div>
+    <div class="nav-brand">
+        <img src="https://lh3.googleusercontent.com/d/1Ib-E-X35YqI8vQl7wpar_UXdoQYdc_1N" alt="Logo KU">
+        <div class="brand-divider"></div>
+        <span class="brand-title">ฝ่ายพัฒนานิสิต คณะศึกษาศาสตร์ มก</span>
+    </div>
 
-<!-- เพิ่ม Checkbox และ Label สำหรับทำปุ่ม 3 ขีด (Hamburger Menu) -->
-<input type="checkbox" id="nav-toggle" class="nav-toggle">
-<label for="nav-toggle" class="nav-toggle-label">
-<i class="fa-solid fa-bars"></i>
-</label>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-toggle-label">
+        <i class="fa-solid fa-bars"></i>
+    </label>
 
-<div class="nav-links">
-<a href="https://canva.link/cbn78xyohbndm6z" target="_blank"><i class="fa-solid fa-list-check"></i> ขั้นตอนการเสนอโครงการ</a>
-<a href="https://drive.google.com/drive/folders/1j7EuNR8I7hOl4lJ3UOPg1jTxXySNlXuj" target="_blank" rel="noopener noreferrer">
-  <i class="fa-solid fa-download"></i> ดาวน์โหลดแบบฟอร์มต่าง ๆ
-</a>
-<a href="https://canva.link/fmw17m6mt6o0pok" target="_blank"><i class="fa-solid fa-award"></i> Template เกียรติบัตร</a>
-<a href="https://www.edu.ku.ac.th/" target="_blank"><i class="fa-solid fa-globe"></i> เว็บไซต์คณะศึกษาศาสตร์</a>
+    <div class="nav-links">
+        <a href="https://canva.link/cbn78xyohbndm6z" target="_blank">
+            <i class="fa-solid fa-list-check"></i> ขั้นตอนการเสนอโครงการ
+        </a>
+        <a href="https://drive.google.com/drive/folders/1j7EuNR8I7hOl4lJ3UOPg1jTxXySNlXuj" target="_blank" rel="noopener noreferrer">
+            <i class="fa-solid fa-download"></i> ดาวน์โหลดแบบฟอร์มต่าง ๆ
+        </a>
+        <a href="https://canva.link/fmw17m6mt6o0pok" target="_blank">
+            <i class="fa-solid fa-award"></i> Template เกียรติบัตร
+        </a>
+        <a href="https://www.edu.ku.ac.th/" target="_blank">
+            <i class="fa-solid fa-globe"></i> เว็บไซต์คณะศึกษาศาสตร์
+        </a>
+    </div>
 </div>
-</div>
+<div class="navbar-bottom-bar"></div>
 
 <div class="hero-section">
-<h1>📝 ระบบช่วยร่างและตรวจสอบหนังสือราชการ</h1>
-<p>เครื่องมือช่วยสร้างและตรวจสอบหนังสือราชการตามรูปแบบมาตรฐาน</p>
+    <h1>📝 ระบบช่วยร่างและตรวจสอบหนังสือราชการ</h1>
+    <p>เครื่องมือช่วยสร้างและตรวจสอบหนังสือราชการตามรูปแบบมาตรฐาน</p>
 </div>
 """
 
