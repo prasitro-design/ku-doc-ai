@@ -184,13 +184,20 @@ NAVBAR_HTML = """
 <img src="https://lh3.googleusercontent.com/d/1Ib-E-X35YqI8vQl7wpar_UXdoQYdc_1N" alt="Logo KU">
 <span>ฝ่ายพัฒนานิสิต คณะศึกษาศาสตร์ มก.</span>
 </div>
+
+<!-- เพิ่ม Checkbox และ Label สำหรับทำปุ่ม 3 ขีด (Hamburger Menu) -->
 <input type="checkbox" id="nav-toggle" class="nav-toggle">
-<label for="nav-toggle" class="nav-toggle-label"><i class="fa-solid fa-bars"></i></label>
+<label for="nav-toggle" class="nav-toggle-label">
+<i class="fa-solid fa-bars"></i>
+</label>
+
 <div class="nav-links">
 <a href="https://canva.link/cbn78xyohbndm6z" target="_blank"><i class="fa-solid fa-list-check"></i> ขั้นตอนการเสนอโครงการ</a>
-<a href="https://drive.google.com/drive/u/1/folders/1HDGo2ImRk_Szo5gXn5JnCXsu6swffRux" target="_blank"><i class="fa-solid fa-download"></i> ดาวน์โหลดแบบฟอร์ม</a>
+<a href="https://drive.google.com/drive/folders/1j7EuNR8I7hOl4lJ3UOPg1jTxXySNlXuj" target="_blank" rel="noopener noreferrer">
+  <i class="fa-solid fa-download"></i> ดาวน์โหลดแบบฟอร์มต่าง ๆ
+</a>
 <a href="https://canva.link/fmw17m6mt6o0pok" target="_blank"><i class="fa-solid fa-award"></i> Template เกียรติบัตร</a>
-<a href="https://www.edu.ku.ac.th/" target="_blank"><i class="fa-solid fa-globe"></i> เว็บไซต์คณะ</a>
+<a href="https://www.edu.ku.ac.th/" target="_blank"><i class="fa-solid fa-globe"></i> เว็บไซต์คณะศึกษาศาสตร์</a>
 </div>
 </div>
 
